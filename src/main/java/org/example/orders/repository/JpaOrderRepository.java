@@ -1,12 +1,14 @@
 package org.example.orders.repository;
 
-import org.example.orders.model.Order;
+
+import org.example.orders.model.Request;
+import org.example.orders.model.Status;
 import org.example.orders.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 
@@ -14,45 +16,49 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class JpaOrderRepository implements OrderRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private EntityManager em;
 
     @Override
-    public Order save(Order order, int userId) {
-        order.setUser(entityManager.getReference(User.class, userId));
-        if (order.isNew()) {
-            entityManager.persist(order);
-            return order;
-        } else if (get(order.id(), userId) == null) {
+    @Transactional
+    public Request save(Request request, int userId) {
+        request.setUser(em.getReference(User.class, userId));
+        if (request.isNew()) {
+            em.persist(request);
+            return request;
+        } else if (get(request.id(), userId) == null) {
             return null;
         }
-        return entityManager.merge(order);
+        return em.merge(request);
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        return entityManager.createNamedQuery(Order.DELETE)
-                .setParameter("id", id)
-                .setParameter("userId", userId)
-                .executeUpdate() != 0;
+        throw new RuntimeException("Delete not implement");
     }
 
     @Override
-    public Order get(int id, int userId) {
-        Order order = entityManager.find(Order.class, id);
-        return order != null && order.getUser().getId() == userId ? order : null;
+    public Request get(int id, int userId) {
+        Request request = em.find(Request.class, id);
+        return request != null && request.getUser().getId() == userId ? request : null;
     }
 
     @Override
-    public List<Order> getAll() {
-        return entityManager.createNamedQuery(Order.ALL_SORTED, Order.class)
+    public List<Request> getAll() {
+        return em.createNamedQuery(Request.ALL_SORTED, Request.class)
                 .getResultList();
     }
 
     @Override
-    public List<Order> getAllByUser(int userId) {
-        return entityManager.createNamedQuery(Order.ALL_SORTED_BY_USER, Order.class)
-                .setParameter("userId", userId)
+    public boolean changeStatus(int id, Status status) {
+//        return crudOrderRepository.changeStatus(id, status);
+        return false;
+    }
+
+    @Override
+    public List<Request> getAllByUser(int userId) {
+       return em.createNamedQuery(Request.ALL_SORTED, Request.class)
+//                .setParameter("userId", userId)
                 .getResultList();
     }
 }

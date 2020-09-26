@@ -1,7 +1,10 @@
 package org.example.orders.service;
 
-import org.example.orders.model.Order;
+
+import org.example.orders.model.Request;
+import org.example.orders.model.Status;
 import org.example.orders.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -11,32 +14,34 @@ import static org.example.orders.util.ValidationUtil.*;
 
 @Service
 public class OrderService {
-    private final OrderRepository orderRepository;
+    @Autowired
+    OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    public Order get(int id, int userId) {
+    public Request get(int id, int userId) {
         return checkNotFoundWithId(orderRepository.get(id, userId), id);
     }
 
-    public void update(Order order, int userId) {
-        Assert.notNull(order, "order must not be null");
-        checkNotFoundWithId(orderRepository.save(order, userId), order.id());
+    public void update(Request request, int userId) {
+        Assert.notNull(request, "request must not be null");
+        checkNotFoundWithId(orderRepository.save(request, userId), request.id());
     }
 
-    public Order create(Order order, int userId) {
-        Assert.notNull(order, "order must not be null");
-        return orderRepository.save(order, userId);
+    public Request create(Request request, int userId) {
+        Assert.notNull(request, "request must not be null");
+        return orderRepository.save(request, userId);
     }
 
-    public List<Order> getAllByUser(int userId) {
+    public List<Request> getAllByUser(int userId) {
         return orderRepository.getAllByUser(userId);
     }
 
-    public List<Order> getAll() {
+    public List<Request> getAll() {
         return orderRepository.getAll();
+    }
+
+    public void changeStatus(int id, Status status) {
+        Assert.notNull(status, "order must not be null");
+        checkNotFoundWithId(orderRepository.changeStatus(id, status), id);
     }
 
 }

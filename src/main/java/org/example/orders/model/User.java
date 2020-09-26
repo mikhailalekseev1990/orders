@@ -11,13 +11,16 @@ import java.util.List;
 import java.util.Set;
 
 @NamedQueries({
-        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id DESC")})
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id DESC"),
+})
 
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "users_unique_name_idx")})
 public class User extends AbstractBaseEntity{
     public static final String ALL_SORTED = "User.getAll";
+    public static final String SET_ROLE = "User.setRole";
+    public static final String DELETE_ROLE = "User.deleteRole";
 
     @NotBlank
     @Size(min = 2, max = 100)
@@ -38,7 +41,7 @@ public class User extends AbstractBaseEntity{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("id")
-    private List<Order> orders;
+    private List<Request> request;
 
     public User(){
     }
@@ -82,12 +85,12 @@ public class User extends AbstractBaseEntity{
         this.roles = roles;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<Request> getOrders() {
+        return request;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrders(List<Request> orders) {
+        this.request = orders;
     }
 
     public void setRoles(Collection<Role> roles) {
