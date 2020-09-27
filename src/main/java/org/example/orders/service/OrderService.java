@@ -35,11 +35,11 @@ public class OrderService {
         return orderRepository.getAllByUser(userId);
     }
 
-    public List<Request> getAll() {
-        return orderRepository.getAll();
+    public List<Request> getAllByOperator() {
+        return orderRepository.getAllByOperator();
     }
 
-    public void changeStatus(int id, Status status) {
+    public void changeStatus(int id, String status) {
         Assert.notNull(status, "order must not be null");
         checkNotFoundWithId(orderRepository.changeStatus(id, status), id);
     }

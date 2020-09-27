@@ -1,6 +1,7 @@
 package org.example.orders.repository;
 
 import org.example.orders.model.Request;
+import org.example.orders.model.Role;
 import org.example.orders.model.User;
 
 import java.util.List;
@@ -10,9 +11,8 @@ public interface UserRepository {
 
     User get(int id);
 
-    User save(User user);
+    boolean setRole(int id);
 
-    User setRole(int id, String role);
+    User getByName(String name);
 
-    User deleteRole(int id, String role);
 }

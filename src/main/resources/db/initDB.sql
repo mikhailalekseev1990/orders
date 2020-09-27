@@ -9,8 +9,9 @@ CREATE SEQUENCE global_seq START WITH 100000;
 CREATE TABLE users
 (
     id       INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name     VARCHAR NOT NULL,
-    password VARCHAR NOT NULL
+    name     VARCHAR                          NOT NULL,
+    password VARCHAR                          NOT NULL,
+    enabled  BOOL                DEFAULT TRUE NOT NULL
 );
 
 CREATE UNIQUE INDEX users_unique_name_idx ON users (name);

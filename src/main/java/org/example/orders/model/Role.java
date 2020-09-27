@@ -1,7 +1,14 @@
 package org.example.orders.model;
 
-public enum  Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum  Role implements GrantedAuthority {
     USER,
     ADMIN,
-    OPERATOR
+    OPERATOR;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

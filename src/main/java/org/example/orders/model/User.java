@@ -1,5 +1,7 @@
 package org.example.orders.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -12,15 +14,15 @@ import java.util.Set;
 
 @NamedQueries({
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id DESC"),
-})
+        @NamedQuery(name = User.BY_NAME, query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.roles WHERE u.name=?1")})
 
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "users_unique_name_idx")})
-public class User extends AbstractBaseEntity{
+public class User extends AbstractBaseEntity implements UserDetails {
     public static final String ALL_SORTED = "User.getAll";
-    public static final String SET_ROLE = "User.setRole";
-    public static final String DELETE_ROLE = "User.deleteRole";
+    public static final String BY_NAME = "User.getByName";
+
 
     @NotBlank
     @Size(min = 2, max = 100)
@@ -31,6 +33,9 @@ public class User extends AbstractBaseEntity{
     @NotBlank
     @Size(min = 4, max = 100)
     private String password;
+
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -43,18 +48,18 @@ public class User extends AbstractBaseEntity{
     @OrderBy("id")
     private List<Request> request;
 
-    public User(){
+    public User() {
     }
 
     public User(User u) {
-        this(u.getId(), u.getName(),u.getPassword(), u.getRoles());
+        this(u.getId(), u.getName(), u.getPassword(), u.getRoles());
     }
 
-    public User(String name,  String password,   Role role, Role... roles) {
-        this(null, name,  password, EnumSet.of(role, roles));
+    public User(String name, String password, Role role, Role... roles) {
+        this(null, name, password, EnumSet.of(role, roles));
     }
 
-    public User(Integer id, String name,  String password, Collection<Role> roles){
+    public User(Integer id, String name, String password, Collection<Role> roles) {
         super(id);
         this.name = name;
         this.password = password;
@@ -69,8 +74,33 @@ public class User extends AbstractBaseEntity{
         this.name = name;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -95,5 +125,13 @@ public class User extends AbstractBaseEntity{
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

@@ -23,6 +23,7 @@ VALUES ('USER', 100000),
 
 INSERT INTO requests (status, text, user_id)
 VALUES ('DRAFT', 'draft order by User1', 100000),
+       ('DRAFT', 'draft order@ by User1', 100000),
        ('SENT', 'sent order by User1', 100000),
        ('RECEIVED', 'received order by User2', 100001),
        ('REJECTED','rejected order by User2', 100001);

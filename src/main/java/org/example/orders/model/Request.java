@@ -8,17 +8,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NamedQueries({
-        @NamedQuery(name = Request.ALL_SORTED, query = "SELECT r FROM Request r  ORDER BY r.registration DESC"),
+        @NamedQuery(name = Request.ALL_SORTED_BY_OPERATOR, query = "SELECT r FROM Request r WHERE r.status<>'DRAFT' ORDER BY r.registration DESC"),
         @NamedQuery(name = Request.ALL_SORTED_BY_USER, query = "SELECT o FROM Request o WHERE o.user.id=:userId ORDER BY o.registration DESC"),
-        @NamedQuery(name = Request.CHANGE_STATUS, query = "UPDATE Request o SET o.status=:status WHERE o.id=:id"),
-        @NamedQuery(name = Request.DELETE, query = "DELETE FROM Request o WHERE o.id=:id AND o.user.id=:userId")})
+        @NamedQuery(name = Request.CHANGE_STATUS, query = "UPDATE Request o SET o.status=:status WHERE o.id=:id")})
 
 @Entity
 @Table(name = "requests")
 public class Request extends AbstractBaseEntity {
-    public static final String ALL_SORTED = "Request.getAll";
+    public static final String ALL_SORTED_BY_OPERATOR = "Request.getAllByOperator";
     public static final String ALL_SORTED_BY_USER = "Request.getAllByUser";
-    public static final String DELETE = "Request.delete";
     public static final String CHANGE_STATUS = "Request.changeStatus";
     private String status; //  draft, sent, received, rejected
 

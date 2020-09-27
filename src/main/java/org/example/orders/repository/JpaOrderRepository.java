@@ -2,7 +2,6 @@ package org.example.orders.repository;
 
 
 import org.example.orders.model.Request;
-import org.example.orders.model.Status;
 import org.example.orders.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,22 +42,28 @@ public class JpaOrderRepository implements OrderRepository {
         return request != null && request.getUser().getId() == userId ? request : null;
     }
 
-    @Override
-    public List<Request> getAll() {
-        return em.createNamedQuery(Request.ALL_SORTED, Request.class)
-                .getResultList();
-    }
-
-    @Override
-    public boolean changeStatus(int id, Status status) {
-//        return crudOrderRepository.changeStatus(id, status);
-        return false;
-    }
 
     @Override
     public List<Request> getAllByUser(int userId) {
-       return em.createNamedQuery(Request.ALL_SORTED, Request.class)
-//                .setParameter("userId", userId)
+        return em.createNamedQuery(Request.ALL_SORTED_BY_USER, Request.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
+
+    @Override
+    public List<Request> getAllByOperator() {
+        return em.createNamedQuery(Request.ALL_SORTED_BY_OPERATOR, Request.class)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public boolean changeStatus(int id, String status) {
+        return em.createNamedQuery(Request.CHANGE_STATUS)
+                .setParameter("status", status)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
+    }
+
+
 }

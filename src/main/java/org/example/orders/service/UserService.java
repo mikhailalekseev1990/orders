@@ -2,6 +2,9 @@ package org.example.orders.service;
 
 import org.example.orders.model.User;
 import org.example.orders.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,13 +12,13 @@ import java.util.List;
 import static org.example.orders.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-public class UserService {
-
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     public List<User> getAll() {
         return userRepository.getAll();
     }
@@ -24,15 +27,13 @@ public class UserService {
         return checkNotFoundWithId(userRepository.get(id), id);
     }
 
-    public User save(User user) {
-        return null;
+    public boolean setRole(int id) {
+        return userRepository.setRole(id);
     }
 
-    public User setRole(int id, String role) {
-        return null;
+    @Override
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        return userRepository.getByName(name);
     }
 
-    public User deleteRole(int id, String role) {
-        return null;
-    }
 }

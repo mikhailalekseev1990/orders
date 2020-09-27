@@ -15,10 +15,9 @@ public interface OrderRepository {
 
     Request get(int id, int userId);
 
-    // ORDERED dateTime desc
     List<Request> getAllByUser(int userId);
 
-    List<Request> getAll();
+    List<Request> getAllByOperator();
 
-    boolean changeStatus(int id, Status status);
+    boolean changeStatus(int id, String status);
 }

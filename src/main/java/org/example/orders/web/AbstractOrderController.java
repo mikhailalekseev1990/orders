@@ -1,8 +1,7 @@
 package org.example.orders.web;
 
 import org.example.orders.model.Request;
-import org.example.orders.model.Role;
-import org.example.orders.model.Status;
+import org.example.orders.security.SecurityUtil;
 import org.example.orders.service.OrderService;
 import org.example.orders.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,15 @@ public class AbstractOrderController {
         return orderService.get(id, userId);
     }
 
-    public List<Request> getAll() {
+    public List<Request> getAllByOperator() {
+        return orderService.getAllByOperator();
+
+    }
+
+    public List<Request> getAllByUser() {
         int userId = SecurityUtil.authUserId();
-        if(userService.get(userId).getRoles().contains(Role.OPERATOR)) {
-            return orderService.getAll();
-        }else {
-            return orderService.getAllByUser(userId);
-        }
+        return orderService.getAllByUser(userId);
+
     }
 
     public Request create(Request request) {
@@ -45,7 +46,7 @@ public class AbstractOrderController {
         orderService.update(request, userId);
     }
 
-    public void changeStatus(int id, Status status){
+    public void changeStatus(int id, String status) {
         orderService.changeStatus(id, status);
     }
 }
