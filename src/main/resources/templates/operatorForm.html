@@ -12,7 +12,7 @@
     <input type="submit" value="Sign Out"/>
 </form>
 
-<form th:action="@{/operator}" th:object="${request}" method="POST">
+<form th:action="@{/operator}" th:object="${order}" method="POST">
     <input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{text}"/>
     Status:

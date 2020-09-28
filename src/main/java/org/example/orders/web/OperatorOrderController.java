@@ -1,6 +1,6 @@
 package org.example.orders.web;
 
-import org.example.orders.model.Request;
+import org.example.orders.model.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +20,10 @@ public class OperatorOrderController extends AbstractOrderController {
 
     @GetMapping("/change-status/{id}")
     public String viewOrder(@PathVariable int id, Model model) throws IOException {
-        Request request = getByOperator(id);
-        String text = request.getText();
+        Order order = getByOperator(id);
+        String text = order.getText();
         model.addAttribute("text", changeText(text));
-        model.addAttribute("request", request);
+        model.addAttribute("order", order);
         return "operatorForm";
     }
 

@@ -3,7 +3,7 @@
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-        <class>org.example.orders.model.Request</class>
+        <class>org.example.orders.model.Order</class>
         <class>org.example.orders.model.User</class>
 
         <properties>

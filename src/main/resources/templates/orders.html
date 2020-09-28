@@ -10,10 +10,23 @@
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+<div sec:authorize="hasRole('USER')">
+    <div sec:authorize="hasRole('OPERATOR')">
+        <a href="/orders">User</a>
+    </div>
+</div>
+
+<div sec:authorize="hasRole('USER')">
+    <div sec:authorize="hasRole('OPERATOR')">
+        <a href="/operator">Operator</a>
+    </div>
+</div>
+
 <h1>Orders</h1>
 <div sec:authorize="hasRole('USER')">
     <a href="/orders/create">Add Order</a>
 </div>
+
 <br/><br/>
 
 <form th:action="@{/orders}" method="GET">

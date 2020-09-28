@@ -1,6 +1,6 @@
 package org.example.orders.web;
 
-import org.example.orders.model.Request;
+import org.example.orders.model.Order;
 import org.example.orders.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,16 +24,16 @@ public class UserOrderController extends AbstractOrderController{
 
     @GetMapping("/create")
     public String create(Model model) {
-        Request request = new Request("DRAFT", "ertt");
-        model.addAttribute("request", request);
+        Order order = new Order("DRAFT", "");
+        model.addAttribute("order", order);
         return "orderForm";
     }
 
     @GetMapping("/{id}/update")
     public String update(Model model, @PathVariable int id) {
-        Request request = getByUser(id);
-        if (request.getStatus().equals("DRAFT")) { // проверка для редактирования черновика
-            model.addAttribute("request", request);
+        Order order = getByUser(id);
+        if (order.getStatus().equals("DRAFT")) { // проверка для редактирования черновика
+            model.addAttribute("order", order);
             return "orderForm";
         } else {
             return "redirect:/orders";
@@ -42,8 +42,8 @@ public class UserOrderController extends AbstractOrderController{
 
     @GetMapping("/{id}/send")
     public String send(@PathVariable int id) {
-        Request request = getByUser(id);
-        if (request.getStatus().equals("DRAFT")) { // проверка для редактирования черновика
+        Order order = getByUser(id);
+        if (order.getStatus().equals("DRAFT")) { // проверка для редактирования черновика
             changeStatus(id, "SENT");
         }
         return "redirect:/orders";
@@ -54,12 +54,12 @@ public class UserOrderController extends AbstractOrderController{
     public String save(HttpServletRequest request) throws IOException {
         request.getParameter("status");
         request.getParameter("text");
-        Request r = new Request(request.getParameter("status"), request.getParameter("text"));
+        Order order = new Order(request.getParameter("status"), request.getParameter("text"));
 
         if (request.getParameter("id").isEmpty()) {
-            super.create(r);
+            super.create(order);
         } else {
-            super.update(r, getOrderId(request));
+            super.update(order, getOrderId(request));
         }
         return "redirect:/orders";
     }

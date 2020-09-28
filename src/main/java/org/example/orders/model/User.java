@@ -46,7 +46,7 @@ public class User extends AbstractBaseEntity implements UserDetails {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("id")
-    private List<Request> request;
+    private List<Order> order;
 
     public User() {
     }
@@ -115,12 +115,12 @@ public class User extends AbstractBaseEntity implements UserDetails {
         this.roles = roles;
     }
 
-    public List<Request> getOrders() {
-        return request;
+    public List<Order> getOrders() {
+        return order;
     }
 
-    public void setOrders(List<Request> orders) {
-        this.request = orders;
+    public void setOrders(List<Order> orders) {
+        this.order = orders;
     }
 
     public void setRoles(Collection<Role> roles) {

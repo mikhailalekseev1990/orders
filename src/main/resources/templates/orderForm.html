@@ -12,13 +12,13 @@
     <input type="submit" value="Sign Out"/>
 </form>
 
-<form th:action="@{/orders}" th:object="${request}" method="POST">
+<form th:action="@{/orders}" th:object="${order}" method="POST">
     <input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{status}"/>
-    <th:block th:utext="${request.id}"/>
+    <th:block th:utext="${order.id}"/>
     <br/>
     Status:
-    <th:block th:utext="${request.status}"/>
+    <th:block th:utext="${order.status}"/>
 
 
     Text:

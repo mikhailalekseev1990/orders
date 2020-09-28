@@ -1,25 +1,22 @@
 package org.example.orders.repository;
 
-import org.example.orders.model.Request;
-import org.example.orders.model.Status;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.example.orders.model.Order;
 
 import java.util.List;
 
 public interface OrderRepository {
 
-    Request save(Request request, int userId);
+    Order save(Order order, int userId);
 
     boolean delete(int id, int userId);
 
-    Request getByUser(int id, int userId);
+    Order getByUser(int id, int userId);
 
-    Request getByOperator(int id);
+    Order getByOperator(int id);
 
-    List<Request> getAllByUser(int userId);
+    List<Order> getAllByUser(int userId);
 
-    List<Request> getAllByOperator();
+    List<Order> getAllByOperator();
 
     boolean changeStatus(int id, String status);
 }

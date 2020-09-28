@@ -1,6 +1,5 @@
 package org.example.orders.web;
 
-import org.example.orders.model.Request;
 import org.example.orders.model.Role;
 import org.example.orders.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;

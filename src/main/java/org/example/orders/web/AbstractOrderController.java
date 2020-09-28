@@ -1,8 +1,6 @@
 package org.example.orders.web;
 
-import org.example.orders.model.Request;
-import org.example.orders.model.Role;
-import org.example.orders.security.SecurityUtil;
+import org.example.orders.model.Order;
 import org.example.orders.service.OrderService;
 import org.example.orders.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static org.example.orders.util.ValidationUtil.assureIdConsistent;
 import static org.example.orders.util.ValidationUtil.checkNew;
@@ -29,36 +26,36 @@ public class AbstractOrderController {
         return auth.getName();
     }
 
-    public Request getByUser(int id) {
+    public Order getByUser(int id) {
         int userId = userService.getByName(getCurrentUsername()).getId();
         return orderService.getByUser(id, userId);
     }
 
-    public Request getByOperator(int id) {
+    public Order getByOperator(int id) {
                 return orderService.getByOperator(id);
     }
 
-    public List<Request> getAllByOperator() {
+    public List<Order> getAllByOperator() {
         return orderService.getAllByOperator();
 
     }
 
-    public List<Request> getAllByUser() {
+    public List<Order> getAllByUser() {
         int userId = userService.getByName(getCurrentUsername()).getId();
         return orderService.getAllByUser(userId);
 
     }
 
-    public Request create(Request request) {
+    public Order create(Order order) {
         int userId = userService.getByName(getCurrentUsername()).getId();
-        checkNew(request);
-        return orderService.create(request, userId);
+        checkNew(order);
+        return orderService.create(order, userId);
     }
 
-    public void update(Request request, int id) {
+    public void update(Order order, int id) {
         int userId = userService.getByName(getCurrentUsername()).getId();
-        assureIdConsistent(request, id);
-        orderService.update(request, userId);
+        assureIdConsistent(order, id);
+        orderService.update(order, userId);
     }
 
     public void changeStatus(int id, String status) {

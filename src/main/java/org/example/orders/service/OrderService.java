@@ -1,8 +1,7 @@
 package org.example.orders.service;
 
 
-import org.example.orders.model.Request;
-import org.example.orders.model.Status;
+import org.example.orders.model.Order;
 import org.example.orders.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,29 +16,29 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public Request getByUser(int id, int userId) {
+    public Order getByUser(int id, int userId) {
         return checkNotFoundWithId(orderRepository.getByUser(id, userId), id);
     }
 
-    public Request getByOperator(int id) {
+    public Order getByOperator(int id) {
         return checkNotFoundWithId(orderRepository.getByOperator(id), id);
     }
 
-    public void update(Request request, int userId) {
-        Assert.notNull(request, "request must not be null");
-        checkNotFoundWithId(orderRepository.save(request, userId), request.id());
+    public void update(Order order, int userId) {
+        Assert.notNull(order, "order must not be null");
+        checkNotFoundWithId(orderRepository.save(order, userId), order.id());
     }
 
-    public Request create(Request request, int userId) {
-        Assert.notNull(request, "request must not be null");
-        return orderRepository.save(request, userId);
+    public Order create(Order order, int userId) {
+        Assert.notNull(order, "order must not be null");
+        return orderRepository.save(order, userId);
     }
 
-    public List<Request> getAllByUser(int userId) {
+    public List<Order> getAllByUser(int userId) {
         return orderRepository.getAllByUser(userId);
     }
 
-    public List<Request> getAllByOperator() {
+    public List<Order> getAllByOperator() {
         return orderRepository.getAllByOperator();
     }
 
