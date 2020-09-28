@@ -32,11 +32,6 @@ public class JpaOrderRepository implements OrderRepository {
     }
 
     @Override
-    public boolean delete(int id, int userId) {
-        throw new RuntimeException("Delete not implement");
-    }
-
-    @Override
     public Order getByOperator(int id) {
         return em.find(Order.class, id);
     }

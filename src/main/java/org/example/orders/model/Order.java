@@ -13,7 +13,7 @@ import java.util.Date;
         @NamedQuery(name = Order.CHANGE_STATUS, query = "UPDATE Order o SET o.status=:status WHERE o.id=:id")})
 
 @Entity
-@Table(name = "orders")
+@Table(name = "ordrs")
 public class Order extends AbstractBaseEntity {
     public static final String ALL_SORTED_BY_OPERATOR = "Order.getAllByOperator";
     public static final String ALL_SORTED_BY_USER = "Order.getAllByUser";

@@ -8,8 +8,6 @@ public interface OrderRepository {
 
     Order save(Order order, int userId);
 
-    boolean delete(int id, int userId);
-
     Order getByUser(int id, int userId);
 
     Order getByOperator(int id);

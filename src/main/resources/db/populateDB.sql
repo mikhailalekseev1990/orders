@@ -1,7 +1,7 @@
 DELETE
 FROM user_roles;
 DELETE
-FROM orders;
+FROM ordrs;
 DELETE
 FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
@@ -21,7 +21,7 @@ VALUES ('USER', 100000),
        ('OPERATOR', 100003),
        ('OPERATOR', 100004);
 
-INSERT INTO orders (status, text, user_id)
+INSERT INTO ordrs (status, text, user_id)
 VALUES ('DRAFT', 'draft order by User1', 100000),
        ('DRAFT', 'draft order@ by User1', 100000),
        ('SENT', 'sent order by User1', 100000),
