@@ -12,17 +12,20 @@
     <input type="submit" value="Sign Out"/>
 </form>
 
-<form th:action="@{/orders}" th:object="${request}" method="POST">
+<form th:action="@{/operator}" th:object="${request}" method="POST">
     <input type="hidden" th:field="*{id}"/>
-    <input type="hidden" th:field="*{status}"/>
-    <th:block th:utext="${request.id}"/>
-    <br/>
+    <input type="hidden" th:field="*{text}"/>
     Status:
-    <th:block th:utext="${request.status}"/>
-
-
+        <select th:field="*{status}">
+            <option th:value="'RECEIVED'" th:text="RECEIVED"></option>
+            <option th:value="'REJECTED'" th:text="REJECTED"></option>
+        </select>
+    </div>
+    <br/>
+    <br/>
+    <br/>
     Text:
-    <input type="text" th:field="*{text}"/>
+    <th:block th:utext="${text}"/>
 
     <input type="submit" value="Save"/>
 
@@ -30,5 +33,7 @@
 </form>
 
 <br/>
+
+
 </body>
 </html>

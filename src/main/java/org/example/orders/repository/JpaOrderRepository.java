@@ -25,7 +25,7 @@ public class JpaOrderRepository implements OrderRepository {
         if (request.isNew()) {
             em.persist(request);
             return request;
-        } else if (get(request.id(), userId) == null) {
+        } else if (getByUser(request.id(), userId) == null) {
             return null;
         }
         return em.merge(request);
@@ -37,7 +37,12 @@ public class JpaOrderRepository implements OrderRepository {
     }
 
     @Override
-    public Request get(int id, int userId) {
+    public Request getByOperator(int id) {
+        return em.find(Request.class, id);
+    }
+
+    @Override
+    public Request getByUser(int id, int userId) {
         Request request = em.find(Request.class, id);
         return request != null && request.getUser().getId() == userId ? request : null;
     }

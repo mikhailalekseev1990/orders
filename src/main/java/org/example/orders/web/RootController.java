@@ -4,6 +4,8 @@ import org.example.orders.model.Role;
 import org.example.orders.security.SecurityUtil;
 import org.example.orders.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +18,20 @@ public class RootController {
 
     @Autowired
     UserService userService;
-
+    private String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
 
     @GetMapping(value = "/")
     public String root() {
-        Set<Role> roles = userService.get(SecurityUtil.authUserId()).getRoles();
+        Set<Role> roles = userService.get( userService.getByName(getCurrentUsername()).getId()).getRoles();
         if (roles.contains(Role.ADMIN)) {
-            return "redirect:users";
+            return "redirect:admin";
         } else if (roles.contains(Role.OPERATOR)) {
-            return "redirect:orders/operator";
+            return "redirect:operator";
         } else {
-            return "redirect:orders/user";
+            return "redirect:orders";
         }
     }
 

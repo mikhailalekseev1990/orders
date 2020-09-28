@@ -13,7 +13,9 @@ public interface OrderRepository {
 
     boolean delete(int id, int userId);
 
-    Request get(int id, int userId);
+    Request getByUser(int id, int userId);
+
+    Request getByOperator(int id);
 
     List<Request> getAllByUser(int userId);
 

@@ -1,39 +1,47 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8"/>
     <title>Orders</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h1>Orders</h1>
-<a href="orders/create">Add Order</a>
-<br/><br/>
-
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+<h1>Orders</h1>
+<div sec:authorize="hasRole('USER')">
+    <a href="/orders/create">Add Order</a>
+</div>
+<br/><br/>
 
-<form th:action="@{/orders/user}" method="GET">
+<form th:action="@{/orders}" method="GET">
     <table border="1">
         <tr>
-            <th>id</th>
+            <th>Id</th>
             <th>Status</th>
-            <th>Text</th>
-            <th>Update</th>
-            <th>Send</th>
+            <th>Date</th>
+            <div sec:authorize="hasRole('USER')">
+                <th>View and Update</th>
+                <th>Send</th>
+            </div>
+            <div sec:authorize="hasRole('OPERATOR')">
+                <th>View and change status</th>
+            </div>
 
         </tr>
         <tr th:each="order : ${orders}">
             <td th:utext="${order.id}">...</td>
             <td th:utext="${order.status}">...</td>
-            <td th:utext="${order.text}">...</td>
-            <td><a th:href="@{'/orders/update/' + ${order.id}}">Update</a></td>
-            <td><a th:href="@{'/orders/send/' + ${order.id}}">Sent</a></td>
-            <td><a th:href="@{'/orders/changeStatus/' + ${order.id}}">View and change status</a></td>
-
-
-
+            <td th:utext="${order.registration}">...</td>
+            <div sec:authorize="hasRole('USER')">
+                <td><a th:href="@{'/orders/' + ${order.id} +'/update'}">View and Update</a></td>
+                <td><a th:href="@{'/orders/' + ${order.id} +'/send'}">Sent</a></td>
+            </div>
+            <div sec:authorize="hasRole('OPERATOR')">
+                <td><a th:href="@{'/operator/change-status/' + ${order.id}}">View and change status</a></td>
+            </div>
         </tr>
     </table>
 </form>

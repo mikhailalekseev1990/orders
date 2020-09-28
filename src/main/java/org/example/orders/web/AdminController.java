@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/users")
-@PreAuthorize("hasAnyAuthority('ADMIN')")
-public class UserController extends AbstractUserController {
+@RequestMapping("/admin")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+public class AdminController extends AbstractUserController {
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", super.getAll());
@@ -26,6 +26,6 @@ public class UserController extends AbstractUserController {
         if (!user.getRoles().contains(Role.OPERATOR)) {
             super.setRole(id);
         }
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 }

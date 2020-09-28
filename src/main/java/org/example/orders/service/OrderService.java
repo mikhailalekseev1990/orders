@@ -17,8 +17,12 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public Request get(int id, int userId) {
-        return checkNotFoundWithId(orderRepository.get(id, userId), id);
+    public Request getByUser(int id, int userId) {
+        return checkNotFoundWithId(orderRepository.getByUser(id, userId), id);
+    }
+
+    public Request getByOperator(int id) {
+        return checkNotFoundWithId(orderRepository.getByOperator(id), id);
     }
 
     public void update(Request request, int userId) {
