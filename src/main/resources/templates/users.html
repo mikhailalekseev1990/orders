@@ -26,7 +26,7 @@
             <td th:utext="${user.name}">...</td>
             <td th:utext="${user.password}">...</td>
             <td th:utext="${user.roles}">...</td>
-            <td><a th:href="@{'/admin/addRole/' + ${user.id}}">Add operator role </a></td>
+            <td><a th:href="@{'/admin/add-role/' + ${user.id}}">Add operator role </a></td>
         </tr>
     </table>
 </form>

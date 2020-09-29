@@ -19,7 +19,7 @@ public class AdminController extends AbstractUserController {
         return "users";
     }
 
-    @GetMapping("/addRole/{id}")
+    @GetMapping("/add-role/{id}")
     public String addRole(@PathVariable int id){
         User user = get(id);
         if (!user.getRoles().contains(Role.OPERATOR)) {
